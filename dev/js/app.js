@@ -1,64 +1,63 @@
-window.onload = () => {
-    let output = document.getElementById(`output`);
-    let table2 = document.getElementById(`table2`);
-    let content = ``;
-    let counter = 1;
-    let flip = ``;
+// Get the size of the matrix from user input
+let size = parseInt(window.prompt(`Enter the size of the matrix (integer greater than 0)`));
 
-    let input = window.prompt(`Tell me the size of your table`, 20);
-    // error message if <=1
-    while (input <=1){
-         input = window.prompt(`Wrong input, enter a whole number bigger than 1`, 5);
+// Make sure the input is valid
+while (size < 1 || size === null || isNaN(size)) {
+    size = parseInt(window.prompt(`Invalid input. Please enter a valid size for the matrix (integer greater than 0)`));
+}
+
+// Create a 1D array to represent the matrix
+let matrix = new Array(size);
+
+// Calculate the halfway point of the matrix (used for flipping)
+let midpoint = parseInt((size * size / 2.0));
+
+// Populate the matrix with arbitrary numbers
+for (let i = 0; i < size; i++) {
+    matrix[i] = new Array(size);
+    for (let j = 0; j < size; j++) {
+        matrix[i][j] = 1 + j + (i * size);
     }
+}
 
-    input = parseInt(input, 10);
-    console.log(typeof input);
-
-    let myNewArray = new Array(input);
-    console.log(`The size of your new array is ${myNewArray.length}`);
-
-    content = `<table>`;// first table 
-
-    for(let i = 0; i < myNewArray.length; i++) {
-        content += `<tr>`;
-
-        for(let j = 0; j < myNewArray.length; j++) {
-            content += `<td>${counter++}</td>`;
+// Flip the matrix diagonally
+for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+        // If the current element is not on the diagonal, flip it
+        if ((size + ((size - 1) * i)) !== (i * size + j + 1)) {
+            if ((i * size + j) < midpoint) {
+                let temp = matrix[i][j];
+                matrix[i][j] = matrix[size - i - 1][size - j - 1];
+                matrix[size - i - 1][size - j - 1] = temp;
+            }
         }
+    }
+}
 
+// Display the matrix
+let display = (version) => {
+    let container = document.querySelector(`body`).appendChild(document.createElement(`div`));
+    container.setAttribute(`class`, `matrix`);
+    let content = ``;
+    for (let i = 0; i < size; i++) {
+        content += `<tr>`;
+        for (let j = 0; j < size; j++) {
+            // If the current element is on the diagonal, add the `unflipped` class
+            if ((size + ((size - 1) * i)) === (i * size + j + 1)) {
+                content += `<td class="unflipped">${1 + j + (i * size)}</td>`;
+            } else if (version === `original`) {
+                content += `<td>${1 + j + (i * size)}</td>`;
+            } else if (version === `flipped`) {
+                content += `<td>${matrix[i][j]}</td>`;
+            }
+        }
         content += `</tr>`;
     }
-
-    content += `</table>`;
-
-    output.innerHTML = content;
-
-    /// the start of the fipped matrix 
-    filp = `<table>`;
-
-    for(let i = 0; i < myNewArray.length; i++) {
-        filp += `<tr>`;
-
-        for(let j = 0; j < myNewArray.length; j++) {
-
-            let hold =(i*myNewArray.length) + 1 + j;
-            if(!((myNewArray.length + ((myNewArray.length -1 )*i) === hold))) {
-                hold =(myNewArray.length *myNewArray.length) - hold;
-                hold++;
-                filp += `<td>${hold}</td>`;
-            }
-            //numbers that dont change will turn yellow 
-            else
-            {
-                filp += `<td bgcolor =  "yellow" > ${hold}</td>`;
-            }
-        }
-
-        filp += `</tr>`;
-    }
-
-    filp += `</table>`;
-
-    table2.innerHTML = filp;
-
+    container.innerHTML = `<table>${content}</table>`;
 };
+
+// Display the original matrix
+display(`original`);
+
+// Display the flipped matrix
+display(`flipped`);

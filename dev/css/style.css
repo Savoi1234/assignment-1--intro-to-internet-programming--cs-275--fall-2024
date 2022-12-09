@@ -1,38 +1,28 @@
-body {
-    background-color: papayawhip;
+.matrix td {
+  padding: 10px;
+  border: 1px solid black;
+  text-align: center;
   }
-  
-  table,
-  td {
-    border: 3px solid black;
-    text-align: center;
-    
+
+  .matrix td.unflipped {
+  background-color: yellow;
   }
-  
-  table {
-    text-align: center;
-    border-collapse: collapse;
-    margin-left: auto;  
-    margin-right: auto;  
-    background-color: coral;
+
+  body {
+  text-align: center;
   }
-  
-  td {
-    padding: 12px;
+
+  .matrix {
+  width: 10%;
+  margin: 0 auto;
+  padding: 10px;
   }
-  h1 {
-    text-align: center;
-    border-collapse: collapse;
-    
-  }
-  h2{
-    text-align: center;
-    border-collapse: wrap;
-    padding: 8px;
-    border: 1px solid black;
-  }
-  em{
-    border-color: red;
-    border-collapse: collapse;
-  }
-  
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid black;
+  padding: 0.5em;
+  text-align: center;
+}
